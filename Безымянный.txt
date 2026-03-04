@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rodions 3D Print</title>
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #e3f2fd, #ffffff);
+}
+header {
+    background: #1565c0;
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+h1 { margin: 0; }
+.container {
+    padding: 20px;
+    max-width: 900px;
+    margin: auto;
+}
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    text-align: center;
+}
+button {
+    background: #1565c0;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+button:hover { background: #0d47a1; }
+
+.cart, .form-section {
+    background: white;
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+input, select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 8px;
+    margin-bottom: 15px;
+}
+footer {
+    background: #1565c0;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 40px;
+}
+</style>
+</head>
+<body>
+
+<header>
+<h1>Rodions 3D Print</h1>
+<p>3D печать + NFC карточка в подарок 🎁</p>
+</header>
+
+<div class="container">
+
+<div class="products">
+<div class="card">
+<h2>3D Брелок</h2>
+<p>Персональный дизайн</p>
+<p><strong>5€</strong></p>
+<button onclick="addToCart('Брелок',5)">Добавить</button>
+</div>
+
+<div class="card">
+<h2>3D Фигурка</h2>
+<p>Любой цвет и модель</p>
+<p><strong>15€</strong></p>
+<button onclick="addToCart('Фигурка',15)">Добавить</button>
+</div>
+</div>
+
+<div class="cart">
+<h2>🛒 Корзина</h2>
+<div id="cartItems"></div>
+
+<label>Доставка по Латвии:</label>
+<select id="shipping" onchange="updateTotal()">
+<option value="3">Omniva — 3€</option>
+<option value="5">Курьер — 5€</option>
+<option value="0">Самовывоз — бесплатно</option>
+</select>
+
+<h3 id="total">Итого: 0€</h3>
+</div>
+
+<div class="form-section">
+<h2>📦 Оформление заказа</h2>
+<input type="text" id="name" placeholder="Ваше имя" required>
+<input type="text" id="phone" placeholder="Телефон">
+<input type="text" id="address" placeholder="Адрес доставки">
+<input type="text" id="instagram" placeholder="Instagram для связи">
+<button onclick="checkout()">Отправить заказ</button>
+</div>
+
+</div>
+
+<footer>
+<p>© 2026 Rodions 3D Print | Доставка по всей Латвии</p>
+</footer>
+
+<script>
+let cart = [];
+
+function addToCart(name, price){
+    cart.push({name, price});
+    renderCart();
+}
+
+function renderCart(){
+    let div = document.getElementById("cartItems");
+    div.innerHTML = "";
+    cart.forEach(item=>{
+        div.innerHTML += `<p>${item.name} - ${item.price}€</p>`;
+    });
+    updateTotal();
+}
+
+function updateTotal(){
+    let shipping = parseFloat(document.getElementById("shipping").value);
+    let sum = cart.reduce((t,i)=> t+i.price,0);
+    document.getElementById("total").innerText = "Итого: " + (sum+shipping) + "€";
+}
+
+function checkout(){
+    if(cart.length===0){
+        alert("Добавьте товар в корзину!");
+        return;
+    }
+
+    let name = document.getElementById("name").value;
+    if(name===""){
+        alert("Введите имя!");
+        return;
+    }
+
+    alert("Спасибо за заказ! Мы свяжемся с вами для подтверждения и оплаты переводом.");
+}
+</script>
+
+</body>
+</html>
